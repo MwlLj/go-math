@@ -106,8 +106,8 @@ func GetDistancesToReferencePoints(Y_s [][]float32, Yplus []float32, Yminus []fl
 		// plusDistances = append(plusDistances, dPlus)
 		// minusDistances = append(minusDistances, dMinus)
 
-		*pds = append(*pds, dPlus)
-		*mds = append(*mds, dMinus)
+		// *pds = append(*pds, dPlus)
+		// *mds = append(*mds, dMinus)
 
 		alternativeName := "A" + strconv.Itoa(i+1)
 		distances[i] = NewDistance(alternativeName, dPlus, dMinus)
