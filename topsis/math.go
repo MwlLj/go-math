@@ -92,23 +92,28 @@ func GetReferencePoints(Y_s [][]float32) (Yplus, Yminus []float32) {
 	return
 }
 
-func GetDistancesToReferencePoints(Y_s [][]float32, Yplus []float32, Yminus []float32) (distances []*Distance, pds *[]float32, mds *[]float32) {
+func GetDistancesToReferencePoints(Y_s [][]float32, Yplus []float32, Yminus []float32) (distances []*Distance, pds []float32, mds []float32) {
 	distances = make([]*Distance, len(Y_s))
-	plusDistances := []float32{}
-	minusDistances := []float32{}
+	// plusDistances := []float32{}
+	// minusDistances := []float32{}
+	pds = make([]float32, len(Y_s))
+	mds = make([]float32, len(Y_s))
 
 	for i, y := range Y_s {
 		dPlus := getEuclideanDistance(y, Yplus)
 		dMinus := getEuclideanDistance(y, Yminus)
 
-		plusDistances = append(plusDistances, dPlus)
-		minusDistances = append(minusDistances, dMinus)
+		// plusDistances = append(plusDistances, dPlus)
+		// minusDistances = append(minusDistances, dMinus)
+
+		pds = append(pds, dPlus)
+		mds = append(mds, dMinus)
 
 		alternativeName := "A" + strconv.Itoa(i+1)
 		distances[i] = NewDistance(alternativeName, dPlus, dMinus)
 	}
 
-	return distances, &plusDistances, &minusDistances
+	return distances, pds, mds
 }
 
 func getEuclideanDistance(X []float32, Y []float32) (distance float32) {
