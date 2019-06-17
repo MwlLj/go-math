@@ -11,10 +11,9 @@ func GetAverageMarks(report *Report) (Y [][]float32) {
 	X := report.Experts
 	X_s := NewFloatCube(expertNumber, report.AlternativeNumber, report.CoefficientNumber)
 
-
 	// Calculate X'iq(s) from Xiq(s)
 	//	For each alternative
-	for a := 0; a < report.AlternativeNumber; a++{
+	for a := 0; a < report.AlternativeNumber; a++ {
 		//	Go trough all coefficients
 		for k := 0; k < report.CoefficientNumber; k++ {
 			//	Compute average expert mark
@@ -38,7 +37,7 @@ func GetAverageMarks(report *Report) (Y [][]float32) {
 
 	//	All experts are equal in our case
 	expertWeight := 1.0 / float32(expertNumber)
-	for a := 0; a < report.AlternativeNumber; a++{
+	for a := 0; a < report.AlternativeNumber; a++ {
 		//	Go trough all coefficients
 		for k := 0; k < report.CoefficientNumber; k++ {
 			shiftedExpertsOpinions := NewFloatVector(expertNumber)
@@ -93,23 +92,28 @@ func GetReferencePoints(Y_s [][]float32) (Yplus, Yminus []float32) {
 	return
 }
 
-func GetDistancesToReferencePoints(Y_s [][]float32, Yplus []float32, Yminus []float32) (distances []*Distance) {
+func GetDistancesToReferencePoints(Y_s [][]float32, Yplus []float32, Yminus []float32) (distances []*Distance, pds *[]float32, mds *[]float32) {
 	distances = make([]*Distance, len(Y_s))
+	plusDistances := []float32{}
+	minusDistances := []float32{}
 
 	for i, y := range Y_s {
 		dPlus := getEuclideanDistance(y, Yplus)
 		dMinus := getEuclideanDistance(y, Yminus)
 
+		plusDistances = append(plusDistances, dPlus)
+		minusDistances = append(minusDistances, dMinus)
+
 		alternativeName := "A" + strconv.Itoa(i+1)
-		distances[i] = NewDistance(alternativeName , dPlus, dMinus)
+		distances[i] = NewDistance(alternativeName, dPlus, dMinus)
 	}
 
-	return distances
+	return distances, &plusDistances, &minusDistances
 }
 
-func getEuclideanDistance(X []float32, Y[]float32) (distance float32) {
+func getEuclideanDistance(X []float32, Y []float32) (distance float32) {
 	for i := range X {
-		distance += float32(math.Pow(float64(X[i] - Y[i]), float64(2)))
+		distance += float32(math.Pow(float64(X[i]-Y[i]), float64(2)))
 	}
 
 	distance = float32(math.Sqrt(float64(distance)))

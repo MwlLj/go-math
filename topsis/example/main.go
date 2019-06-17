@@ -43,7 +43,7 @@ func main() {
 	PrintFloatVector("Y-", Yminus)
 
 	fmt.Println("5. Calculate referenced distances")
-	distances := topsis.GetDistancesToReferencePoints(Y_s, Yplus, Yminus)
+	distances, _, _ := topsis.GetDistancesToReferencePoints(Y_s, Yplus, Yminus)
 	for _, d := range distances {
 		fmt.Println(d)
 	}
